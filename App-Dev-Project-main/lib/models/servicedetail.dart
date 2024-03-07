@@ -1,79 +1,101 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ServiceDetailsPage extends StatelessWidget {
+class ServiceDetailsPage extends StatefulWidget {
   final String title;
   final String image;
 
   const ServiceDetailsPage({required this.title, required this.image});
 
   @override
+  _ServiceDetailsPageState createState() => _ServiceDetailsPageState();
+}
+
+class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // Simulate a delay to show the loading indicator
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        isLoading = false; // Set to false to hide the loading indicator
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    String description = getDescription(title);
+    String description = getDescription(widget.title);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          title,
+          widget.title,
           style: const TextStyle(
               fontFamily: 'Serif', fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.asset(image),
-            const SizedBox(
-              height: 15,
-            ),
-            Text(
-              'Details for $title',
-              style: const TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Serif'),
-            ),
-            const SizedBox(height: 10.0),
-            Text(
-              description,
-              style: const TextStyle(fontSize: 16.0, fontFamily: 'Serif'),
-            ),
-            // You can customize and extend this section based on your requirements
-            const SizedBox(
-              height: 30,
-            ),
-            Center(
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color.fromARGB(255, 232, 196, 183)
-                          .withOpacity(0.9),
-                      offset: const Offset(0, 1),
-                    )
-                  ],
-                  border: Border.all(color: Colors.white),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: TextButton(
-                  child: Text(
-                    'Set Appointment',
-                    style: GoogleFonts.notoSerif(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18),
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset(widget.image),
+                  const SizedBox(
+                    height: 15,
                   ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/appointmentpage');
-                  },
-                ),
+                  Text(
+                    'Details for ${widget.title}',
+                    style: const TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Serif'),
+                  ),
+                  const SizedBox(height: 10.0),
+                  Text(
+                    description,
+                    style: const TextStyle(fontSize: 16.0, fontFamily: 'Serif'),
+                  ),
+                  // You can customize and extend this section based on your requirements
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Center(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color.fromARGB(255, 232, 196, 183)
+                                .withOpacity(0.9),
+                            offset: const Offset(0, 1),
+                          )
+                        ],
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: TextButton(
+                        child: Text(
+                          'Set Appointment',
+                          style: GoogleFonts.notoSerif(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/appointmentpage');
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 
